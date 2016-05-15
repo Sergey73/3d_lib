@@ -9,8 +9,7 @@ module.exports = {
 
   // точки входа, т.е. js файлы которые подключаем в html
   entry: {
-    home: "./clientSrc/home",
-    about: "./clientSrc/about"
+    home: "./clientSrc/home"
   },
 
   output: {
@@ -36,11 +35,11 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'common',
       chunks: ['about', 'home']   // вынести общую часть из этих модулей в common
-    }),
+    })/*,
     // подключаем three.js
     new webpack.ProvidePlugin({
       THREE: 'three/three.min.js'
-    })
+    })*/
   ],
 
   // где и как искать все модули
@@ -71,8 +70,8 @@ module.exports = {
         }
       }
     ],
-
-   // noParse: /angular\/angular.js
+    
+    noParse: /three\/three.js/
   }
 };
 
