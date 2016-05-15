@@ -36,7 +36,7 @@ var scene, camera, renderer;
 
         requestAnimationFrame( animate );
 
-        mesh.rotation.x += 0.01;
+        mesh.rotation.x += 0.1;
         mesh.rotation.y += 0.02;
 
         renderer.render( scene, camera );

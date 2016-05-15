@@ -62,6 +62,7 @@ module.exports = {
     loaders: [
       {
         test: /\.jsx?$/, // к *.js файлам применять babel
+       // include: __dirname + '/clientSrc',
         exclude: /(node_modules|bower_components)/, // не применять к этим папкам
         loader: 'babel', // 'babel-loader' is also a legal name to reference
         query: {
@@ -70,8 +71,8 @@ module.exports = {
         }
       }
     ],
-    
-    noParse: /three\/three.js/
+
+    noParse:  /\/node_modules\/(three)/
   }
 };
 
