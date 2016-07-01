@@ -1,11 +1,15 @@
 'use strict';
 
 // import THREE from 'three'
-import dat from 'dat-gui'
 
-var scene; 
-var camera; 
-var renderer;
+import dat from 'dat-gui'
+import StereoEffect from 'three-stereo-effect';
+//var StereoEffect = require('three-stereo-effect')(THREE);
+import OrientationControl from 'three.orientation';
+import OrbitControls from 'three-orbit-controls'
+
+
+var scene, camera, effect, renderer;
 
 // mesh
 var cubeGeometry;
@@ -38,15 +42,15 @@ var color;
 
   function init() {
 
-    scene = new THREE.Scene();
+    scene = new THREE.Scene(); 
 
-    camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 500 );
-    camera.position.z = 40;
-    camera.position.y = 40;
-    camera.position.x = 40;
+    camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.001, 700);
+    camera.position.z = 0;
+    camera.position.y = 15;
+    camera.position.x = 0;
 
     camera.lookAt(scene.position);
-
+    
     // gui 
     guiControls = new function () {
       this.rotationX = 0.01;
@@ -86,11 +90,11 @@ var color;
     scene.add(spotLight);
     // end light
 
-    renderer = new THREE.WebGLRenderer();
-    renderer.setClearColor(0xdddddd); // цвет фона
+    renderer = new THREE.WebGLRenderer({alpha: true});
+   // renderer.setClearColor(0xdddddd); // цвет фона
     renderer.setSize( window.innerWidth, window.innerHeight );
-    renderer.shadowMapEnabled = true; // ?
-    renderer.shadowMapSoft = true; // ?
+   // renderer.shadowMapEnabled = true; // ?
+   // renderer.shadowMapSoft = true; // ?
 
     // controls
     controls = new THREE.OrbitControls (camera, renderer.domElement);
@@ -109,6 +113,11 @@ var color;
     // end helpers
     document.getElementById('container').appendChild( renderer.domElement );
 
+    // stereo effect
+    var sEffect = new StereoEffect(THREE);
+    effect = new sEffect(renderer);
+    effect.eyeSeparation = 3;
+    effect.setSize( window.innerWidth, window.innerHeight );
   }
 
   function render () {
@@ -116,19 +125,19 @@ var color;
     cube.rotation.y += guiControls.rotationY;
     cube.rotation.z += guiControls.rotationZ;
 
-    spotLight.position.x = guiControls.lightX;
-    spotLight.position.y = guiControls.lightY;
-    spotLight.position.z = guiControls.lightZ;
+    // spotLight.position.x = guiControls.lightX;
+    // spotLight.position.y = guiControls.lightY;
+    // spotLight.position.z = guiControls.lightZ;
 
 
   }
-  
+  OrientationControl(camera).update();
   function animate() {
     // вызов саму себя
     requestAnimationFrame( animate );
     render();
 
-    renderer.render( scene, camera );
+    effect.render( scene, camera );
 
   }
 
